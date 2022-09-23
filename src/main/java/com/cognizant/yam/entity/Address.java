@@ -4,9 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,8 +20,4 @@ public class Address {
 	private String address;
 	private String city;
 	private String state;
-	
-	@ManyToOne
-	@JsonIgnore
-	private User user;
 }

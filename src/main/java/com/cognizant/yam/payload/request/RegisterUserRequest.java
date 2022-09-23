@@ -22,6 +22,8 @@ public class RegisterUserRequest {
 	@NotBlank
 	private String lastName;
 	private String phone;
+	@NotBlank
+	private String role;
 	
 	private Address address;
 }

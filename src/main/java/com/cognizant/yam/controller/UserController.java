@@ -45,7 +45,15 @@ public class UserController {
 		user.setFirstName(request.getFirstName());
 		user.setLastName(request.getLastName());
 		user.setPhone(request.getPhone());
-		user.setRole(Role.REGULAR_MEMBER);
+		
+		if(request.getRole().equalsIgnoreCase("CORE")) {
+			user.setRole(Role.CORE_MEMBER);
+		} else if(request.getRole().equalsIgnoreCase("REGULAR")) {
+			user.setRole(Role.REGULAR_MEMBER);
+		} else {
+			throw new RuntimeException("Invalid role");
+		}
+		
 		user.setAddress(request.getAddress());
 		
 		User newUser = userService.register(user);
