@@ -3,6 +3,7 @@ package com.cognizant.yam.util;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.cognizant.yam.entity.User;
@@ -16,6 +17,8 @@ public class SetCoreMember {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@PostConstruct
 	private void initializeDB() {
@@ -29,7 +32,7 @@ public class SetCoreMember {
 			core.setFirstName("Core Member");
 			core.setUsername(CORE_USERNAME);
 			core.setEmail("yam.core@stals.com");
-			core.setPassword(CORE_PASSWORD);
+			core.setPassword(passwordEncoder.encode(CORE_PASSWORD));
 			core.setRole(Role.CORE_MEMBER);
 			
 			userService.register(core);
