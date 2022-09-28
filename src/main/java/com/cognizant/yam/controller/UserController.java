@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cognizant.yam.entity.User;
 import com.cognizant.yam.enums.Role;
+import com.cognizant.yam.payload.request.ChangePasswordRequest;
 import com.cognizant.yam.payload.request.LoginUserRequest;
 import com.cognizant.yam.payload.request.RegisterUserRequest;
 import com.cognizant.yam.payload.request.UpdateAddressRequest;
@@ -121,7 +122,6 @@ public class UserController {
 		User updateUser = userService.getUserById(id).orElseThrow(() -> new RuntimeException("User with ID: "+ id + " not found"));
 		updateUser.setEmail(request.getEmail());
 		updateUser.setUsername(request.getUsername());
-		updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
 		updateUser.setFirstName(request.getFirstName());
 		updateUser.setLastName(request.getLastName());
 		updateUser.setPhone(request.getPhone());
@@ -129,6 +129,21 @@ public class UserController {
 		userService.updateUser(updateUser);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(new JsonMessageResponse("User Details updated successfully!"));
+	}
+	
+	@PutMapping("/change-password/{id}")
+	public ResponseEntity<?> changePassword(@PathVariable int id, @RequestBody ChangePasswordRequest request) {
+		User updateUser = userService.getUserById(id).orElseThrow(() -> new RuntimeException("User with ID: "+ id + " not found"));
+		
+		if(request.getPassword().equals(updateUser.getPassword())) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new JsonMessageResponse("Passwords are the same"));
+		}
+		
+		updateUser.setPassword(request.getPassword());
+		
+		userService.updateUser(updateUser);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(new JsonMessageResponse("Password changed successfully!"));
 	}
 	
 	@PutMapping("/update-address/{id}")
