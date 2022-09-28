@@ -43,6 +43,7 @@ public class WebSecurityConfig {
 		return new AuthTokenFilter();
 	}
 	
+	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 			.cors()
@@ -66,9 +67,9 @@ public class WebSecurityConfig {
 	}
 	
 	 @Bean
-	    public WebSecurityCustomizer webSecurityCustomizer() {
-	    	return (web) -> web.ignoring().antMatchers()
-	    			.antMatchers("/user/login")
-	                .antMatchers("/user/register");
-	    }
+	 public WebSecurityCustomizer webSecurityCustomizer() {
+	    return (web) -> web.ignoring().antMatchers()
+	    		.antMatchers("/user/login")
+	            .antMatchers("/user/register");
+	 }
 }
