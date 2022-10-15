@@ -1,5 +1,7 @@
 package com.cognizant.yam.controller;
 
+import java.sql.Date;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognizant.yam.entity.Message;
+import com.cognizant.yam.payload.request.MessageRequest;
 import com.cognizant.yam.service.MessageService;
 
 @RestController
@@ -23,11 +26,12 @@ public class MessageController {
 	MessageService msgService;
 	
 	@PostMapping("/send-message")
-	public ResponseEntity<?> sendMessage(@Valid @RequestBody Message msgRequest) {
+	public ResponseEntity<?> sendMessage(@Valid @RequestBody MessageRequest msgRequest) {
 		
 		Message msg = new Message();
 		msg.setMsgText(msgRequest.getMsgText());
 		msg.setSender(msgRequest.getSender());
+		msg.setTimestamp(new Date(new java.util.Date().getTime()));
 		msgService.sendMessage(msg);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(msg);
