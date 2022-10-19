@@ -9,6 +9,7 @@ public interface UserService {
 	User register(User user);
 	List<User> getUsers();
 	Optional<User> getUserById(int id);
+	Optional<User> getUserByEmail(String email);
 	User updateUser(User user);
 	void deleteUser(int id);
 	boolean existsById(int id);

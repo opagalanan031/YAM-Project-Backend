@@ -117,6 +117,17 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
 	
+	@GetMapping("/confirm-email/{email}")
+	public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
+		if(!userService.existsByEmail(email)) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new JsonMessageResponse("User with email: "+ email + " not found"));
+		}
+		
+		User user = userService.getUserByEmail(email).orElseThrow(() -> new RuntimeException("User with email: "+ email + " not found"));
+		
+		return ResponseEntity.status(HttpStatus.OK).body(user);
+	}
+	
 	@PutMapping("/update-details/{id}")
 	public ResponseEntity<?> updateUserDetails(@PathVariable int id, @RequestBody UpdateDetailsRequest request) {
 		User updateUser = userService.getUserById(id).orElseThrow(() -> new RuntimeException("User with ID: "+ id + " not found"));
@@ -135,11 +146,11 @@ public class UserController {
 	public ResponseEntity<?> changePassword(@PathVariable int id, @RequestBody ChangePasswordRequest request) {
 		User updateUser = userService.getUserById(id).orElseThrow(() -> new RuntimeException("User with ID: "+ id + " not found"));
 		
-		if(request.getPassword().equals(updateUser.getPassword())) {
+		if(passwordEncoder.encode(request.getPassword()).equals(updateUser.getPassword())) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new JsonMessageResponse("Passwords are the same"));
 		}
 		
-		updateUser.setPassword(request.getPassword());
+		updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
 		
 		userService.updateUser(updateUser);
 		
