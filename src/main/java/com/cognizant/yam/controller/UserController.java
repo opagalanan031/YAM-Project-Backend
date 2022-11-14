@@ -41,7 +41,7 @@ import com.cognizant.yam.service.UserService;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"})
 public class UserController {
 	@Autowired
 	private UserService userService;

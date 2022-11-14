@@ -21,7 +21,7 @@ import com.cognizant.yam.service.MessageService;
 
 @RestController
 @RequestMapping("/message")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"})
 public class MessageController {
 	
 	@Autowired
